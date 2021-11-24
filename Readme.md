@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Павел Ярин](https://up.htmlacademy.ru/ecmascript/16/user/89187).
-* Наставник: `Неизвестно`.
+* Наставник: [Магомед Кандаев](https://htmlacademy.ru/profile/magomedkandaev).
 
 ---
 
