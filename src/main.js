@@ -4,6 +4,7 @@ import {createFilterTemplate} from './view/filter-events.js';
 import {createSortOffersTemplate} from './view/sort-events.js';
 import {createEditEventTemplate} from './view/edit-event.js';
 import {createEventTemplate} from './view/event.js';
+import {offersList} from './mock/point.js';
 import {generatePoint} from './mock/point.js';
 
 const RenderPosition = {
@@ -13,13 +14,13 @@ const RenderPosition = {
   AFTEREND: 'afterend',
 };
 
-const EVENT_COUNT = 3;
+const EVENT_COUNT = 20;
 
 const renderTemplate = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-const points = Array.from({length: EVENT_COUNT}, generatePoint);
+const points = new Array(EVENT_COUNT).fill().map(() => generatePoint(offersList));
 
 const siteHeader = document.querySelector('.page-header');
 const mainTripInfoContainer = siteHeader.querySelector('.trip-main');
