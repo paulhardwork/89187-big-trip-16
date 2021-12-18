@@ -2,8 +2,8 @@ import {createMainMenuTemplate} from './view/main-menu.js';
 import {createTripInfoTemplate} from './view/trip-info.js';
 import {createFilterTemplate} from './view/filter-events.js';
 import {createSortOffersTemplate} from './view/sort-events.js';
-import {createEditEventTemplate} from './view/edit-event.js';
-import {createEventTemplate} from './view/event.js';
+import {createEditPointTemplate} from './view/edit-point.js';
+import {createPointTemplate} from './view/point.js';
 import {offersList} from './mock/point.js';
 import {generatePoint} from './mock/point.js';
 
@@ -35,9 +35,9 @@ renderTemplate(filterContainer, createFilterTemplate(), RenderPosition.BEFOREEND
 renderTemplate(sortContainer, createSortOffersTemplate(), RenderPosition.BEFOREEND);
 
 const eventsContainer = mainContent.querySelector('.trip-events__list');
-renderTemplate(eventsContainer, createEditEventTemplate(), RenderPosition.BEFOREEND);
+renderTemplate(eventsContainer, createEditPointTemplate(points[0]), RenderPosition.BEFOREEND);
 
-for (let i = 0; i < EVENT_COUNT; i++) {
-  renderTemplate(eventsContainer, createEventTemplate(points[i]), RenderPosition.BEFOREEND);
+for (let i = 1; i < EVENT_COUNT; i++) {
+  renderTemplate(eventsContainer, createPointTemplate(points[i]), RenderPosition.BEFOREEND);
 }
 
