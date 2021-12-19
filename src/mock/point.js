@@ -84,7 +84,7 @@ const generateOffersList = () => {
       ( { type: POINT_TYPES[index], offers: new Array(getRandomInteger(0, 5))
         .fill()
         .map((val, ind) =>
-          ( { id: ind + 1, title: offerTitles[getRandomInteger(0, offerTitles.length - 1)], price: getRandomInteger(10, 100) } )),
+          ( { id: ind + 1, title: offerTitles[ind], price: getRandomInteger(10, 100) } )),
       } ));
 };
 
