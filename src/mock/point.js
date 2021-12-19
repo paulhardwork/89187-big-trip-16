@@ -25,7 +25,7 @@ const generateDateFrom = () => {
 
 const generateDateTo = (startDate) => {
   const minMinuteGap = 10;
-  const maxMinuteGap = 1440;
+  const maxMinuteGap = 1920;
   const diffCurrentTime = getRandomInteger(minMinuteGap, maxMinuteGap);
   const finalDate = dayjs(startDate).add(diffCurrentTime, 'minute').toDate();
   return finalDate;
