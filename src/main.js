@@ -4,7 +4,6 @@ import {createFilterTemplate} from './view/filter-points.js';
 import {createSortOffersTemplate} from './view/sort-points.js';
 import {createEditPointTemplate} from './view/edit-point.js';
 import {createPointTemplate} from './view/point.js';
-import {offersList} from './mock/point.js';
 import {generatePoint} from './mock/point.js';
 
 const RenderPosition = {
@@ -20,7 +19,7 @@ const renderTemplate = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-const points = new Array(EVENT_COUNT).fill().map(() => generatePoint(offersList));
+const points = Array.from({length: EVENT_COUNT}, generatePoint);
 
 const siteHeader = document.querySelector('.page-header');
 const mainTripInfoContainer = siteHeader.querySelector('.trip-main');
