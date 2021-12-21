@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 
 const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 const destinations = ['Amsterdam', 'Geneva', 'Chamonix'];
+const offerTitles = ['Order Uber', 'Switch to comfort class', 'Add meal', 'Add luggage', 'Choose seats'];
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -75,32 +76,30 @@ const generateDestination = () => {
   };
 };
 
-const generateOffersList = () => {
-  const offerTitles = ['Order Uber', 'Switch to comfort class', 'Add meal', 'Add luggage', 'Choose seats'];
-
-  return new Array(POINT_TYPES.length)
+const generateTypeOffers = () => (
+  new Array(getRandomInteger(0, offerTitles.length))
     .fill()
-    .map((value, index) =>
-      ( { type: POINT_TYPES[index], offers: new Array(getRandomInteger(0, 5))
-        .fill()
-        .map((val, ind) =>
-          ( { id: ind + 1, title: offerTitles[ind], price: getRandomInteger(10, 100) } )),
-      } ));
+    .map((value, index) => ( { id: index + 1, title: offerTitles[index], price: getRandomInteger(10, 100) } ))
+);
+
+const generatePointOffers = (offers, type) => {
+  const offersForType = offers.find((item) => item.type === type );
+  const offersCount = getRandomInteger(0, 5);
+
+  if (offersCount === 0) { return []; }
+  else {
+    return offersForType.offers.slice(0, offersCount);
+  }
 };
 
-export const offersList = generateOffersList();
+export const offersList = new Array(POINT_TYPES.length)
+  .fill()
+  .map((value, index) => ( { type: POINT_TYPES[index], offers: generateTypeOffers() } ));
 
-export const generatePoint = (features) => {
+export const generatePoint = () => {
   const dateFrom = generateDateFrom();
   const dateTo = generateDateTo(dateFrom);
   const type = generateType();
-  let offersNumber;
-
-  features.forEach((value, index) => {
-    if (type === value.type) {
-      offersNumber = index;
-    }
-  });
 
   return {
     id: getRandomInteger(0, 100),
@@ -110,7 +109,8 @@ export const generatePoint = (features) => {
     dateFrom,
     dateTo,
     isFavorite: Boolean(getRandomInteger(0, 1)),
-    offers: features[offersNumber].offers
+    offers: generatePointOffers(offersList, type)
   };
 };
+
 
