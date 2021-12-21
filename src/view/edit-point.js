@@ -1,27 +1,48 @@
 import dayjs from 'dayjs';
+import {offersList} from '../mock/point.js';
 
-const createOffersListTemplate = (offers) => (
-  offers
-    .map((value) => {
-      const offerNameWords = value.title.split('');
-      const lastWordName = offerNameWords[offerNameWords.length - 1];
+const isOfferChecked = (pointOffers, offer) => {
+  const comparingOffer = pointOffers.find((item) => item.title === offer.title);
+  return (comparingOffer === undefined) ? '' : 'checked';
+};
 
-      return `<div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${lastWordName}-1" type="checkbox" name="event-offer-${lastWordName}">
-          <label class="event__offer-label" for="event-offer-${lastWordName}-1">
-            <span class="event__offer-title">${value.title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${value.price}</span>
-          </label>
-        </div>`;
-    })
-    .join('')
-);
+const createOffersListTemplate = (allOffers, pointOffers, type) => {
+  const objectForType = allOffers.find((item) => item.type === type);
+  const typeOffers = objectForType.offers;
+  let generatedOffersTemplate = [];
+
+  if (typeOffers.length === 0) { return ''; }
+  else {
+    generatedOffersTemplate = typeOffers
+      .map((value) => {
+        const offerNameWords = value.title.split(' ');
+        const lastWordName = offerNameWords[offerNameWords.length - 1];
+        const checkedAttribute = isOfferChecked(pointOffers, value);
+
+        return `<div class="event__offer-selector">
+            <input class="event__offer-checkbox  visually-hidden" id="event-offer-${lastWordName}-1" type="checkbox" name="event-offer-${lastWordName}" ${checkedAttribute}>
+            <label class="event__offer-label" for="event-offer-${lastWordName}-1">
+              <span class="event__offer-title">${value.title}</span>
+              &plus;&euro;&nbsp;
+              <span class="event__offer-price">${value.price}</span>
+            </label>
+          </div>`;
+      })
+      .join('');
+  }
+
+  return `<section class="event__section  event__section--offers">
+      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
+        ${generatedOffersTemplate}
+      </div>
+    </section>`;
+};
 
 export const createEditPointTemplate = (point) => {
   const {destination, offers, type, dateFrom, dateTo, basePrice} = point;
 
-  const offersList = createOffersListTemplate(offers);
+  const offersListTemplate = createOffersListTemplate(offersList, offers, type);
 
   return `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -120,14 +141,7 @@ export const createEditPointTemplate = (point) => {
         </button>
       </header>
       <section class="event__details">
-        <section class="event__section  event__section--offers">
-          <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-          <div class="event__available-offers">
-            ${offers.length === 0 ? '' : offersList}
-          </div>
-        </section>
-
+        ${offersListTemplate}
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">${destination.description}</p>
