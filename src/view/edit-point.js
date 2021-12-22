@@ -6,6 +6,27 @@ const isOfferChecked = (pointOffers, offer) => {
   return (comparingOffer === undefined) ? '' : 'checked';
 };
 
+const createDestinationBlockTemplate = (destination) => {
+  const {description, pictures} = destination;
+
+  if (description === undefined && pictures.length === 0) { return ''; }
+
+  const descriptionBlock = (description !== undefined) ? `<p class="event__destination-description">${description}</p>`: '';
+  const generatedPicturesTemplate = (pictures.length === 0) ? '' : pictures
+    .map((value) => (`<img class="event__photo" src="${value.src}" alt="Event photo"></img>`))
+    .join('');
+
+  return `<section class="event__section  event__section--destination">
+    <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+    ${descriptionBlock}
+    <div class="event__photos-container">
+      <div class="event__photos-tape">
+        ${generatedPicturesTemplate}
+      </div>
+    </div>
+  </section>`;
+};
+
 const createOffersListTemplate = (allOffers, pointOffers, type) => {
   const objectForType = allOffers.find((item) => item.type === type);
   const typeOffers = objectForType.offers;
@@ -43,6 +64,7 @@ export const createEditPointTemplate = (point) => {
   const {destination, offers, type, dateFrom, dateTo, basePrice} = point;
 
   const offersListTemplate = createOffersListTemplate(offersList, offers, type);
+  const destinationBlockTemplate = createDestinationBlockTemplate(destination);
 
   return `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -142,10 +164,7 @@ export const createEditPointTemplate = (point) => {
       </header>
       <section class="event__details">
         ${offersListTemplate}
-        <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${destination.description}</p>
-        </section>
+        ${destinationBlockTemplate}
       </section>
     </form>
   </li>`;
