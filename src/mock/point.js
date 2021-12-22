@@ -3,12 +3,28 @@ import dayjs from 'dayjs';
 const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 const destinations = ['Amsterdam', 'Geneva', 'Chamonix'];
 const offerTitles = ['Order Uber', 'Switch to comfort class', 'Add meal', 'Add luggage', 'Choose seats'];
+const textForDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus';
+const picturesDescriptions = ['Chamonix parliament building', 'Amsterdam church', 'Geneva airport'];
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
 
   return Math.floor(lower + Math.random() * (upper - lower + 1));
+};
+
+const getRandomArrayElement = (array) => (array[getRandomInteger(0, array.length)]);
+
+const shuffleArray = (array) => {
+  const resultArray = [];
+
+  while (array.length > 0) {
+    const randomElement = getRandomInteger(0, array.length - 1);
+    const currentElement = array.splice(randomElement, 1)[0];
+    resultArray.push(currentElement);
+  }
+
+  return resultArray;
 };
 
 const generateType = () => {
@@ -32,42 +48,22 @@ const generateDateTo = (startDate) => {
   return finalDate;
 };
 
+const generateDescription = () => {
+  const descriptionSentences = textForDescription.split('.')
+    .map( (value) => (`${value}.`));
+
+  return shuffleArray(descriptionSentences).slice(0, getRandomInteger(1, 5)).join('');
+};
+
+const generatePicturesList = () => {
+  const descriptionPicture = getRandomArrayElement(picturesDescriptions);
+
+  return new Array(getRandomInteger(1, 3)).fill().map(() =>
+    ( { src: `http://picsum.photos/300/200?r=${Math.random()}`, description: descriptionPicture } ) );
+};
+
 const generateDestination = () => {
-
-  const generateDescription = () => {
-    const descriptionSentences = [
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      'Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra.',
-      'Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.',
-      'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.',
-      'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
-      'Sed sed nisi sed augue convallis suscipit in sed felis.',
-      'Aliquam erat volutpat.',
-      'Nunc fermentum tortor ac porta dapibus.',
-      'In rutrum ac purus sit amet tempus.'
-    ];
-    let leftBorder = getRandomInteger(0, descriptionSentences.length - 1);
-    let rightBorder = getRandomInteger(0, descriptionSentences.length - 1);
-    let temp = 0;
-
-    if (leftBorder > rightBorder) {
-      temp = rightBorder;
-      rightBorder = leftBorder;
-      leftBorder = temp;
-    }
-
-    if (leftBorder === rightBorder) { rightBorder++; }
-
-    return descriptionSentences.slice(leftBorder, rightBorder).join(' ');
-  };
-
-  const generatePicturesList = () => {
-    const picturesDescriptions = ['Chamonix parliament building', 'Amsterdam church', 'Geneva airport'];
-    return new Array(getRandomInteger(1, 3)).fill().map(() =>
-      ( {src: `http://picsum.photos/300/200?r=${Math.random()}`, description: picturesDescriptions[getRandomInteger(0, picturesDescriptions.length - 1)]} ) );
-  };
-
-  const name = destinations[getRandomInteger(0, destinations.length - 1)];
+  const name = getRandomArrayElement(destinations);
 
   return {
     description: generateDescription(),
@@ -102,7 +98,7 @@ export const generatePoint = () => {
   const type = generateType();
 
   return {
-    id: getRandomInteger(0, 100),
+    id: getRandomInteger(100, 100000),
     type,
     basePrice: getRandomInteger(20, 1000),
     destination: generateDestination(),
