@@ -5,19 +5,10 @@ import {createSortOffersTemplate} from './view/sort-points.js';
 import {createEditPointTemplate} from './view/edit-point.js';
 import {createPointTemplate} from './view/point.js';
 import {generatePoint} from './mock/point.js';
-
-const RenderPosition = {
-  BEFOREBEGIN: 'beforebegin',
-  AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend',
-  AFTEREND: 'afterend',
-};
+import {RenderPosition, render, renderTemplate} from './render.js';
+import PointsContainer from './view/points-container.js';
 
 const EVENT_COUNT = 20;
-
-const renderTemplate = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
 
 const points = Array.from({length: EVENT_COUNT}, generatePoint);
 
@@ -32,6 +23,7 @@ renderTemplate(mainTripInfoContainer, createTripInfoTemplate(), RenderPosition.A
 renderTemplate(menuContainer, createMainMenuTemplate(), RenderPosition.BEFOREEND);
 renderTemplate(filterContainer, createFilterTemplate(), RenderPosition.BEFOREEND);
 renderTemplate(sortContainer, createSortOffersTemplate(), RenderPosition.BEFOREEND);
+render(sortContainer, new PointsContainer().element, RenderPosition.BEFOREEND);
 
 const eventsContainer = mainContent.querySelector('.trip-events__list');
 renderTemplate(eventsContainer, createEditPointTemplate(points[0]), RenderPosition.BEFOREEND);
