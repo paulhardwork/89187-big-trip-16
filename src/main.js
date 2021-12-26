@@ -16,6 +16,17 @@ const renderPoint = (container, point) => {
   const newEditPoint = new EditPoint(point);
 
   render(container, newPoint.element, RenderPosition.BEFOREEND);
+
+  const OpenEditButton = newPoint.element.querySelector('.event__rollup-btn');
+  const EditPointForm = newEditPoint.element.querySelector('.event--edit');
+
+  OpenEditButton.addEventListener('click', () => {
+    container.replaceChild(newEditPoint.element, newPoint.element);
+  });
+  EditPointForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    container.replaceChild(newPoint.element, newEditPoint.element);
+  });
 };
 
 const siteHeader = document.querySelector('.page-header');
