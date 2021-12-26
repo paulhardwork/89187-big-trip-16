@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import {offersList} from '../mock/point.js';
+import {createElement} from '../render.js';
 
 const isOfferChecked = (pointOffers, offer) => {
   const comparingOffer = pointOffers.find((item) => item.title === offer.title);
@@ -60,7 +61,7 @@ const createOffersListTemplate = (allOffers, pointOffers, type) => {
     </section>`;
 };
 
-export const createEditPointTemplate = (point) => {
+const createEditPointTemplate = (point) => {
   const {destination, offers, type, dateFrom, dateTo, basePrice} = point;
 
   const offersListTemplate = createOffersListTemplate(offersList, offers, type);
@@ -169,3 +170,28 @@ export const createEditPointTemplate = (point) => {
     </form>
   </li>`;
 };
+
+export default class EditPoint {
+  #element = null;
+  #point = null;
+
+  constructor(point) {
+    this.#point = point;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createEditPointTemplate(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
