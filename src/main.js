@@ -1,12 +1,11 @@
-import {createMainMenuTemplate} from './view/main-menu.js';
-import {createTripInfoTemplate} from './view/trip-info.js';
-import {createFilterTemplate} from './view/filter-points.js';
-import {createSortOffersTemplate} from './view/sort-points.js';
-import {createEditPointTemplate} from './view/edit-point.js';
-import {createPointTemplate} from './view/point.js';
 import {generatePoint} from './mock/point.js';
-import {RenderPosition, render, renderTemplate} from './render.js';
+import {RenderPosition, render} from './render.js';
 import PointsContainer from './view/points-container.js';
+import SortPoints from './view/sort-points.js';
+import Point from './view/point.js';
+import EditPoint from './view/edit-point.js';
+import MainMenu from './view/main-menu.js';
+import Filters from './view/filter-points.js';
 
 const EVENT_COUNT = 20;
 
@@ -19,16 +18,15 @@ const filterContainer = mainTripInfoContainer.querySelector('.trip-controls__fil
 const mainContent = document.querySelector('.page-main');
 const sortContainer = mainContent.querySelector('.trip-events');
 
-renderTemplate(mainTripInfoContainer, createTripInfoTemplate(), RenderPosition.AFTERBEGIN);
-renderTemplate(menuContainer, createMainMenuTemplate(), RenderPosition.BEFOREEND);
-renderTemplate(filterContainer, createFilterTemplate(), RenderPosition.BEFOREEND);
-renderTemplate(sortContainer, createSortOffersTemplate(), RenderPosition.BEFOREEND);
+render(menuContainer, new MainMenu().element, RenderPosition.BEFOREEND);
+render(filterContainer, new Filters().element, RenderPosition.BEFOREEND);
+render(sortContainer, new SortPoints().element, RenderPosition.BEFOREEND);
 render(sortContainer, new PointsContainer().element, RenderPosition.BEFOREEND);
 
 const eventsContainer = mainContent.querySelector('.trip-events__list');
-renderTemplate(eventsContainer, createEditPointTemplate(points[0]), RenderPosition.BEFOREEND);
+render(eventsContainer, new EditPoint(points[0]).element, RenderPosition.BEFOREEND);
 
 for (let i = 1; i < EVENT_COUNT; i++) {
-  renderTemplate(eventsContainer, createPointTemplate(points[i]), RenderPosition.BEFOREEND);
+  render(eventsContainer, new Point(points[i]).element, RenderPosition.BEFOREEND);
 }
 
