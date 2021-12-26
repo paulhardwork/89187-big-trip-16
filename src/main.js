@@ -11,6 +11,13 @@ const EVENT_COUNT = 20;
 
 const points = Array.from({length: EVENT_COUNT}, generatePoint);
 
+const renderPoint = (container, point) => {
+  const newPoint = new Point(point);
+  const newEditPoint = new EditPoint(point);
+
+  render(container, newPoint.element, RenderPosition.BEFOREEND);
+};
+
 const siteHeader = document.querySelector('.page-header');
 const mainTripInfoContainer = siteHeader.querySelector('.trip-main');
 const menuContainer = mainTripInfoContainer.querySelector('.trip-controls__navigation');
@@ -23,10 +30,9 @@ render(filterContainer, new Filters().element, RenderPosition.BEFOREEND);
 render(sortContainer, new SortPoints().element, RenderPosition.BEFOREEND);
 render(sortContainer, new PointsContainer().element, RenderPosition.BEFOREEND);
 
-const eventsContainer = mainContent.querySelector('.trip-events__list');
-render(eventsContainer, new EditPoint(points[0]).element, RenderPosition.BEFOREEND);
+const pointsContainer = mainContent.querySelector('.trip-events__list');
 
-for (let i = 1; i < EVENT_COUNT; i++) {
-  render(eventsContainer, new Point(points[i]).element, RenderPosition.BEFOREEND);
+for (let i = 0; i < EVENT_COUNT; i++) {
+  renderPoint(pointsContainer, points[i]);
 }
 
