@@ -1,25 +1,33 @@
-import {createMainMenuTemplate} from './view/main-menu.js';
-import {createTripInfoTemplate} from './view/trip-info.js';
-import {createFilterTemplate} from './view/filter-points.js';
-import {createSortOffersTemplate} from './view/sort-points.js';
-import {createEditPointTemplate} from './view/edit-point.js';
-import {createPointTemplate} from './view/point.js';
 import {generatePoint} from './mock/point.js';
-
-const RenderPosition = {
-  BEFOREBEGIN: 'beforebegin',
-  AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend',
-  AFTEREND: 'afterend',
-};
+import {RenderPosition, render} from './render.js';
+import PointsContainer from './view/points-container.js';
+import SortPoints from './view/sort-points.js';
+import Point from './view/point.js';
+import EditPoint from './view/edit-point.js';
+import MainMenu from './view/main-menu.js';
+import FilterPoints from './view/filter-points.js';
 
 const EVENT_COUNT = 20;
 
-const renderTemplate = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 const points = Array.from({length: EVENT_COUNT}, generatePoint);
+
+const renderPoint = (container, point) => {
+  const newPoint = new Point(point);
+  const newEditPoint = new EditPoint(point);
+
+  render(container, newPoint.element, RenderPosition.BEFOREEND);
+
+  const openEditButton = newPoint.element.querySelector('.event__rollup-btn');
+  const editPointForm = newEditPoint.element.querySelector('.event--edit');
+
+  openEditButton.addEventListener('click', () => {
+    container.replaceChild(newEditPoint.element, newPoint.element);
+  });
+  editPointForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    container.replaceChild(newPoint.element, newEditPoint.element);
+  });
+};
 
 const siteHeader = document.querySelector('.page-header');
 const mainTripInfoContainer = siteHeader.querySelector('.trip-main');
@@ -28,15 +36,14 @@ const filterContainer = mainTripInfoContainer.querySelector('.trip-controls__fil
 const mainContent = document.querySelector('.page-main');
 const sortContainer = mainContent.querySelector('.trip-events');
 
-renderTemplate(mainTripInfoContainer, createTripInfoTemplate(), RenderPosition.AFTERBEGIN);
-renderTemplate(menuContainer, createMainMenuTemplate(), RenderPosition.BEFOREEND);
-renderTemplate(filterContainer, createFilterTemplate(), RenderPosition.BEFOREEND);
-renderTemplate(sortContainer, createSortOffersTemplate(), RenderPosition.BEFOREEND);
+render(menuContainer, new MainMenu().element, RenderPosition.BEFOREEND);
+render(filterContainer, new FilterPoints().element, RenderPosition.BEFOREEND);
+render(sortContainer, new SortPoints().element, RenderPosition.BEFOREEND);
+render(sortContainer, new PointsContainer().element, RenderPosition.BEFOREEND);
 
-const eventsContainer = mainContent.querySelector('.trip-events__list');
-renderTemplate(eventsContainer, createEditPointTemplate(points[0]), RenderPosition.BEFOREEND);
+const pointsContainer = mainContent.querySelector('.trip-events__list');
 
-for (let i = 1; i < EVENT_COUNT; i++) {
-  renderTemplate(eventsContainer, createPointTemplate(points[i]), RenderPosition.BEFOREEND);
+for (let i = 0; i < EVENT_COUNT; i++) {
+  renderPoint(pointsContainer, points[i]);
 }
 

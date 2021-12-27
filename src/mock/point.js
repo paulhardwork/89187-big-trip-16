@@ -13,7 +13,7 @@ const getRandomInteger = (a, b) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const getRandomArrayElement = (array) => (array[getRandomInteger(0, array.length)]);
+const getRandomArrayElement = (array) => (array[getRandomInteger(0, array.length - 1)]);
 
 const shuffleArray = (array) => {
   const resultArray = [];

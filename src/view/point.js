@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {createElement} from '../render';
 
 const createOffersPointTemplate = (offers) => (
   offers
@@ -31,9 +32,8 @@ const calculateDurationEvent = (dateFrom, dateTo) => {
   return formattingDuration;
 };
 
-export const createPointTemplate = (point) => {
+const createPointTemplate = (point) => {
   const {type, dateFrom, dateTo, destination, basePrice, offers, isFavorite} = point;
-
   const isActive = isFavorite ? '--active' : '';
   const offersListElement = createOffersPointTemplate(offers);
   const durationEvent = calculateDurationEvent(dateFrom, dateTo);
@@ -72,3 +72,28 @@ export const createPointTemplate = (point) => {
     </div>
   </li>`;
 };
+
+export default class Point {
+  #element = null;
+  #point = null;
+
+  constructor(point) {
+    this.#point = point;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createPointTemplate(this.#point);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
