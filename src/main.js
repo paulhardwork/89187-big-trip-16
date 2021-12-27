@@ -5,7 +5,7 @@ import SortPoints from './view/sort-points.js';
 import Point from './view/point.js';
 import EditPoint from './view/edit-point.js';
 import MainMenu from './view/main-menu.js';
-import Filters from './view/filter-points.js';
+import FilterPoints from './view/filter-points.js';
 
 const EVENT_COUNT = 20;
 
@@ -17,13 +17,13 @@ const renderPoint = (container, point) => {
 
   render(container, newPoint.element, RenderPosition.BEFOREEND);
 
-  const OpenEditButton = newPoint.element.querySelector('.event__rollup-btn');
-  const EditPointForm = newEditPoint.element.querySelector('.event--edit');
+  const openEditButton = newPoint.element.querySelector('.event__rollup-btn');
+  const editPointForm = newEditPoint.element.querySelector('.event--edit');
 
-  OpenEditButton.addEventListener('click', () => {
+  openEditButton.addEventListener('click', () => {
     container.replaceChild(newEditPoint.element, newPoint.element);
   });
-  EditPointForm.addEventListener('submit', (evt) => {
+  editPointForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     container.replaceChild(newPoint.element, newEditPoint.element);
   });
@@ -37,7 +37,7 @@ const mainContent = document.querySelector('.page-main');
 const sortContainer = mainContent.querySelector('.trip-events');
 
 render(menuContainer, new MainMenu().element, RenderPosition.BEFOREEND);
-render(filterContainer, new Filters().element, RenderPosition.BEFOREEND);
+render(filterContainer, new FilterPoints().element, RenderPosition.BEFOREEND);
 render(sortContainer, new SortPoints().element, RenderPosition.BEFOREEND);
 render(sortContainer, new PointsContainer().element, RenderPosition.BEFOREEND);
 
