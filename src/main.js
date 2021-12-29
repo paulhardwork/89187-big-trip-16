@@ -1,5 +1,5 @@
 import {generatePoint} from './mock/point.js';
-import {RenderPosition, render} from './render.js';
+import {RenderPosition, render, replace} from './render.js';
 import PointsContainer from './view/points-container.js';
 import SortPoints from './view/sort-points.js';
 import Point from './view/point.js';
@@ -15,14 +15,15 @@ const renderPoint = (container, point) => {
   const pointComponent = new Point(point);
   const editPointComponent = new EditPoint(point);
 
-  render(container, pointComponent.element, RenderPosition.BEFOREEND);
   pointComponent.setEditClickHandler(() => {
-    container.replaceChild(editPointComponent.element, pointComponent.element);
+    replace(editPointComponent, pointComponent);
   });
 
   editPointComponent.setFormSubmitHandler(() => {
-    container.replaceChild(pointComponent.element, editPointComponent.element);
+    replace(pointComponent, editPointComponent);
   });
+
+  render(container, pointComponent, RenderPosition.BEFOREEND);
 };
 
 const siteHeader = document.querySelector('.page-header');
@@ -32,10 +33,10 @@ const filterContainer = mainTripInfoContainer.querySelector('.trip-controls__fil
 const mainContent = document.querySelector('.page-main');
 const sortContainer = mainContent.querySelector('.trip-events');
 
-render(menuContainer, new MainMenu().element, RenderPosition.BEFOREEND);
-render(filterContainer, new FilterPoints().element, RenderPosition.BEFOREEND);
-render(sortContainer, new SortPoints().element, RenderPosition.BEFOREEND);
-render(sortContainer, new PointsContainer().element, RenderPosition.BEFOREEND);
+render(menuContainer, new MainMenu(), RenderPosition.BEFOREEND);
+render(filterContainer, new FilterPoints(), RenderPosition.BEFOREEND);
+render(sortContainer, new SortPoints(), RenderPosition.BEFOREEND);
+render(sortContainer, new PointsContainer(), RenderPosition.BEFOREEND);
 
 const pointsContainer = mainContent.querySelector('.trip-events__list');
 
