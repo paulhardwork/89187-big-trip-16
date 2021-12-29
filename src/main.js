@@ -12,20 +12,16 @@ const EVENT_COUNT = 20;
 const points = Array.from({length: EVENT_COUNT}, generatePoint);
 
 const renderPoint = (container, point) => {
-  const newPoint = new Point(point);
-  const newEditPoint = new EditPoint(point);
+  const pointComponent = new Point(point);
+  const editPointComponent = new EditPoint(point);
 
-  render(container, newPoint.element, RenderPosition.BEFOREEND);
-
-  const openEditButton = newPoint.element.querySelector('.event__rollup-btn');
-  const editPointForm = newEditPoint.element.querySelector('.event--edit');
-
-  openEditButton.addEventListener('click', () => {
-    container.replaceChild(newEditPoint.element, newPoint.element);
+  render(container, pointComponent.element, RenderPosition.BEFOREEND);
+  pointComponent.setEditClickHandler(() => {
+    container.replaceChild(editPointComponent.element, pointComponent.element);
   });
-  editPointForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    container.replaceChild(newPoint.element, newEditPoint.element);
+
+  editPointComponent.setFormSubmitHandler(() => {
+    container.replaceChild(pointComponent.element, editPointComponent.element);
   });
 };
 
