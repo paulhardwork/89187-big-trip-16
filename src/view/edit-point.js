@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {offersList} from '../mock/point.js';
-import {createElement} from '../render.js';
+import AbstractView from './abstract-view.js';
 
 const isOfferChecked = (pointOffers, offer) => {
   const comparingOffer = pointOffers.find((item) => item.title === offer.title);
@@ -171,27 +171,25 @@ const createEditPointTemplate = (point) => {
   </li>`;
 };
 
-export default class EditPoint {
-  #element = null;
+export default class EditPoint extends AbstractView {
   #point = null;
 
   constructor(point) {
+    super();
     this.#point = point;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createEditPointTemplate(this.#point);
   }
 
-  removeElement() {
-    this.#element = null;
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+  };
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 }
