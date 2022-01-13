@@ -31,12 +31,12 @@ const mainTripInfoContainer = siteHeader.querySelector('.trip-main');
 const menuContainer = mainTripInfoContainer.querySelector('.trip-controls__navigation');
 const filterContainer = mainTripInfoContainer.querySelector('.trip-controls__filters');
 const mainContent = document.querySelector('.page-main');
-const sortContainer = mainContent.querySelector('.trip-events');
+const tripListContainer = mainContent.querySelector('.trip-events');
 
 render(menuContainer, new MainMenu(), RenderPosition.BEFOREEND);
 render(filterContainer, new FilterPoints(), RenderPosition.BEFOREEND);
-render(sortContainer, new SortPoints(), RenderPosition.BEFOREEND);
-render(sortContainer, new PointsContainer(), RenderPosition.BEFOREEND);
+render(tripListContainer, new SortPoints(), RenderPosition.BEFOREEND);
+render(tripListContainer, new PointsContainer(), RenderPosition.BEFOREEND);
 
 const pointsContainer = mainContent.querySelector('.trip-events__list');
 
