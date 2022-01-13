@@ -1,6 +1,6 @@
 import Point from '../view/point.js';
 import EditPoint from '../view/edit-point.js';
-import {render, RenderPosition, replace} from '../utils/render.js';
+import {render, RenderPosition, replace} from '../render.js';
 
 export default class PointPresenter {
   #pointsListContainer = null;
