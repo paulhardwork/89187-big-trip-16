@@ -8,9 +8,11 @@ export default class PointPresenter {
   #editPointComponent = null;
 
   #point = null;
+  #changeData = null;
 
-  constructor(pointsListContainer) {
+  constructor(pointsListContainer, changeData) {
     this.#pointsListContainer = pointsListContainer;
+    this.#changeData = changeData;
   }
 
   init = (point) => {
@@ -24,8 +26,9 @@ export default class PointPresenter {
 
 
     this.#pointComponent.setEditClickHandler(this.#handleEditClick);
+    this.#pointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#editPointComponent.setFormSubmitHandler(this.#handleFormSubmit);
-    this.#editPointComponent.setFormCloseButtonHandler(this.#handleFormSubmit);
+    this.#editPointComponent.setFormCloseButtonHandler(this.#handleFormClose);
 
     if (prevPointComponent === null || prevEditPointComponent === null) {
       render(this.#pointsListContainer, this.#pointComponent, RenderPosition.BEFOREEND);
@@ -66,11 +69,20 @@ export default class PointPresenter {
     }
   }
 
+  #handleFavoriteClick = () => {
+    this.#changeData({...this.#point, isFavorite: !this.#point.isFavorite});
+  }
+
   #handleEditClick = () => {
     this.#replacePointToForm();
   }
 
-  #handleFormSubmit = () => {
+  #handleFormSubmit = (point) => {
+    this.#changeData(point);
+    this.#replaceFormToPoint();
+  }
+
+  #handleFormClose = () => {
     this.#replaceFormToPoint();
   }
 }
