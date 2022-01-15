@@ -9,6 +9,7 @@ export default class TripPresenter {
   #sortComponent = new SortPoints();
   #pointsListComponent = new PointsContainer();
   #listEmptyComponent = new ListEmpty();
+  #pointPresenter = new Map();
 
   #tripPoints = [];
 
@@ -29,6 +30,7 @@ export default class TripPresenter {
   #renderPoint = (point) => {
     const pointPresenter = new PointPresenter(this.#pointsListComponent);
     pointPresenter.init(point);
+    this.#pointPresenter.set(point.id, pointPresenter);
   }
 
   #renderListEmpty = () => {
@@ -45,5 +47,10 @@ export default class TripPresenter {
     for (let i = 0; i < this.#tripPoints.length; i++) {
       this.#renderPoint(this.#tripPoints[i]);
     }
+  }
+
+  #clearTripList = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.destroy());
+    this.#pointPresenter.clear();
   }
 }
