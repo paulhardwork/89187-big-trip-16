@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {nanoid} from 'nanoid';
 
 const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 const destinations = ['Amsterdam', 'Geneva', 'Chamonix'];
@@ -98,7 +99,7 @@ export const generatePoint = () => {
   const type = generateType();
 
   return {
-    id: getRandomInteger(100, 100000),
+    id: nanoid(),
     type,
     basePrice: getRandomInteger(20, 1000),
     destination: generateDestination(),
