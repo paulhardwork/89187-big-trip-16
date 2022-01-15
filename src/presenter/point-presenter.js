@@ -21,6 +21,7 @@ export default class PointPresenter {
 
     this.#pointComponent.setEditClickHandler(this.#handleEditClick);
     this.#editPointComponent.setFormSubmitHandler(this.#handleFormSubmit);
+    this.#editPointComponent.setFormCloseButtonHandler(this.#handleFormSubmit);
 
     render(this.#pointsListContainer, this.#pointComponent, RenderPosition.BEFOREEND);
   }

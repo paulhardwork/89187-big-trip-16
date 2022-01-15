@@ -4,8 +4,6 @@ import ListEmpty from '../view/list-empty.js';
 import {RenderPosition, render} from '../render.js';
 import PointPresenter from './point-presenter.js';
 
-const EVENT_COUNT = 20;
-
 export default class TripPresenter {
   #tripListContainer = null;
   #sortComponent = new SortPoints();
@@ -44,7 +42,7 @@ export default class TripPresenter {
     }
     this.#renderSort();
 
-    for (let i = 0; i < EVENT_COUNT; i++) {
+    for (let i = 0; i < this.#tripPoints.length; i++) {
       this.#renderPoint(this.#tripPoints[i]);
     }
   }
