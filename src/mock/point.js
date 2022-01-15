@@ -1,32 +1,12 @@
 import dayjs from 'dayjs';
 import {nanoid} from 'nanoid';
+import {getRandomInteger, getRandomArrayElement, shuffleArray} from '../utils.js';
 
 const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 const destinations = ['Amsterdam', 'Geneva', 'Chamonix'];
 const offerTitles = ['Order Uber', 'Switch to comfort class', 'Add meal', 'Add luggage', 'Choose seats'];
 const textForDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra. Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis. Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus';
 const picturesDescriptions = ['Chamonix parliament building', 'Amsterdam church', 'Geneva airport'];
-
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
-const getRandomArrayElement = (array) => (array[getRandomInteger(0, array.length - 1)]);
-
-const shuffleArray = (array) => {
-  const resultArray = [];
-
-  while (array.length > 0) {
-    const randomElement = getRandomInteger(0, array.length - 1);
-    const currentElement = array.splice(randomElement, 1)[0];
-    resultArray.push(currentElement);
-  }
-
-  return resultArray;
-};
 
 const generateType = () => {
   const number = getRandomInteger(0, POINT_TYPES.length - 1);
